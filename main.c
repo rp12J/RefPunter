@@ -2,19 +2,11 @@
 #include "funciones.h"
 
 int main() {
+
     int opcion;
 
     do {
-        printf("\n--- Cevichería El Palenque ---\n");
-        printf("1. Ver productos\n");
-        printf("2. Ingreso de producto\n");
-        printf("3. Modificación de producto\n");
-        printf("4. Eliminar producto\n");
-        printf("5. Salir\n");
-        fflush(stdin);
-
-        printf("\nEscoja una opción: ");
-        scanf("%d", &opcion);
+        menuInicial(&opcion);
 
         switch (opcion) {
             case 1:
