@@ -4,14 +4,8 @@
 
 #define MAX_PRODUCTOS 25
 
-int cantidadPlatos = 0;
-int ID[MAX_PRODUCTOS];
-char nombre[MAX_PRODUCTOS][50];
-char descripcion[MAX_PRODUCTOS][100];
-int cantidad[MAX_PRODUCTOS];
-float precio[MAX_PRODUCTOS];
-
 void menuInicial(int *opcion) {
+    printf("Cevicheria El Palenque\n");
     printf("1) Ver productos\n");
     printf("2) Ingreso producto\n");
     printf("3) Modificar producto\n");
@@ -21,70 +15,70 @@ void menuInicial(int *opcion) {
     scanf("%d", opcion);
 }
 
-void verProductos() {
+void verProductos(char ID[][25], char nombre[][50], char descripcion[][100], int *cantidad, float *precio, int cantidadPlatos) {
     if (cantidadPlatos == 0) {
-        printf("No hay productos ingresados.\n");
+        printf("No hay comida ingresada.\n");
         return;
     }
 
-    printf("\n--- Productos ---\n");
-    printf("ID\tNombre\t\tDescripción\tCantidad\tPrecio\n");
+    printf("\n--- Carta ---\n");
+    printf("ID      Nombre              Descripción                     Cantidad        Precio\n");
 
     for (int i = 0; i < cantidadPlatos; i++) {
-        printf("%d\t%s\t\t%s\t%d\t\t%.2f\n", ID[i], nombre[i], descripcion[i], cantidad[i], precio[i]);
+        printf("%s      %s              %s                     %d        %.2f\n", ID[i], nombre[i], descripcion[i], cantidad[i], precio[i]);
     }
 }
 
-void ingresarProducto() {
-    if (cantidadPlatos == MAX_PRODUCTOS) {
-        printf("No se pueden ingresar más productos.\n");
+void ingresarProducto(char ID[][25], char nombre[][50], char descripcion[][100], int *cantidad, float *precio, int *cantidadPlatos) {
+    if (*cantidadPlatos >= MAX_PRODUCTOS) {
+        printf("No se puede registrar más comida.\n");
         return;
     }
 
-    printf("\n--- Ingreso de Producto ---\n");
+    printf("\n--- Ingresar carta ---\n");
 
     printf("ID: ");
-    scanf("%d", &ID[cantidadPlatos]);
+    scanf("%s", ID[*cantidadPlatos]);
 
     printf("Nombre: ");
-    scanf("%s", nombre[cantidadPlatos]);
+    scanf("%s", nombre[*cantidadPlatos]);
 
     printf("Descripción: ");
-    scanf("%s", descripcion[cantidadPlatos]);
+    scanf("%s", descripcion[*cantidadPlatos]);
 
     printf("Cantidad: ");
-    scanf("%d", &cantidad[cantidadPlatos]);
+    scanf("%d", &cantidad[*cantidadPlatos]);
 
     printf("Precio: ");
-    scanf("%f", &precio[cantidadPlatos]);
+    scanf("%f", &precio[*cantidadPlatos]);
 
-    cantidadPlatos++;
+    (*cantidadPlatos)++;
 
-    printf("Producto ingresado correctamente.\n");
+    printf("Plato ingresado satisfactoriamente.\n");
 }
 
-void modificarProducto() {
+void modificarProducto(char ID[][25], char nombre[][50], char descripcion[][100], int *cantidad, float *precio, int cantidadPlatos) {
     if (cantidadPlatos == 0) {
-        printf("No hay productos ingresados.\n");
+        printf("No hay comida ingresada.\n");
         return;
     }
 
-    int id;
+    char id[25];
     int indice = -1;
 
-    printf("\n--- Modificación de Producto ---\n");
-    printf("Ingrese el ID del producto a modificar: ");
-    scanf("%d", &id);
+    printf("\n--- Modificación de carta ---\n");
+    printf("Ingrese el ID del plato: ");
+    scanf("%s", id);
 
     for (int i = 0; i < cantidadPlatos; i++) {
-        if (ID[i] == id) {
+        if (strcmp(ID[i], id) == 0) {
             indice = i;
             break;
         }
     }
 
     if (indice == -1) {
-        printf("No se encontró el producto con ID %d\n", id);
+        printf("No se encontró el plato con el ID %s\n", id);
         return;
     }
 
@@ -100,43 +94,44 @@ void modificarProducto() {
     printf("Precio (actual: %.2f): ", precio[indice]);
     scanf("%f", &precio[indice]);
 
-    printf("Producto modificado correctamente.\n");
+    printf("Carta modificada satisfactoriamente.\n");
 }
 
-void eliminarProducto() {
-    if (cantidadPlatos == 0) {
-        printf("No hay productos ingresados.\n");
+
+void eliminarProducto(char ID[][25], char nombre[][50], char descripcion[][100], int *cantidad, float *precio, int *cantidadPlatos) {
+    if (*cantidadPlatos == 0) {
+        printf("No hay comida ingresada.\n");
         return;
     }
 
-    int id;
+    char id[25];
     int indice = -1;
 
-    printf("\n--- Eliminación de Producto ---\n");
-    printf("Ingrese el ID del producto a eliminar: ");
-    scanf("%d", &id);
+    printf("\n--- Eliminación en la carta ---\n");
+    printf("Ingrese el ID del plato a eliminar: ");
+    scanf("%s", id);
 
-    for (int i = 0; i < cantidadPlatos; i++) {
-        if (ID[i] == id) {
+    for (int i = 0; i < *cantidadPlatos; i++) {
+        if (strcmp(ID[i], id) == 0) {
             indice = i;
             break;
         }
     }
 
     if (indice == -1) {
-        printf("No se encontró el producto con ID %d\n", id);
+        printf("No se encontró el plato con el ID %s\n", id);
         return;
     }
 
-    for (int i = indice; i < cantidadPlatos - 1; i++) {
-        ID[i] = ID[i + 1];
+    for (int i = indice; i < *cantidadPlatos - 1; i++) {
+        strcpy(ID[i], ID[i + 1]);
         strcpy(nombre[i], nombre[i + 1]);
         strcpy(descripcion[i], descripcion[i + 1]);
         cantidad[i] = cantidad[i + 1];
         precio[i] = precio[i + 1];
     }
 
-    cantidadPlatos--;
+    (*cantidadPlatos)--;
 
-    printf("Producto eliminado correctamente.\n");
+    printf("Plato eliminado satisfactoriamente.\n");
 }
